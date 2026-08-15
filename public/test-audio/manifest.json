@@ -1,6 +1,78 @@
 [
   {
     "group": "dog",
+    "file": "/test-audio/dog/160477-dog-s-yelping-6.mp3",
+    "title": "Dog's Yelping 6",
+    "licence": "CC0 1.0",
+    "author": "unfa",
+    "source": "https://freesound.org/people/unfa/sounds/160477/"
+  },
+  {
+    "group": "dog",
+    "file": "/test-audio/dog/438484-g31-46-dog-bark-and-door-wav.mp3",
+    "title": "G31-46-Dog Bark and Door.wav",
+    "licence": "CC0 1.0",
+    "author": "craigsmith",
+    "source": "https://freesound.org/people/craigsmith/sounds/438484/"
+  },
+  {
+    "group": "dog",
+    "file": "/test-audio/dog/452180-bark-yelp-dog-small-int-flac.mp3",
+    "title": "bark yelp dog small int.flac",
+    "licence": "CC0 1.0",
+    "author": "kyles",
+    "source": "https://freesound.org/people/kyles/sounds/452180/"
+  },
+  {
+    "group": "dog",
+    "file": "/test-audio/dog/452202-dog-small-whimper-run-flac.mp3",
+    "title": "dog small whimper +run.flac",
+    "licence": "CC0 1.0",
+    "author": "kyles",
+    "source": "https://freesound.org/people/kyles/sounds/452202/"
+  },
+  {
+    "group": "dog",
+    "file": "/test-audio/dog/461527-dog-whining-1-wav.mp3",
+    "title": "dog_whining 1.wav",
+    "licence": "CC0 1.0",
+    "author": "15GPanskaBokstefflova_Nicola",
+    "source": "https://freesound.org/people/15GPanskaBokstefflova_Nicola/sounds/461527/"
+  },
+  {
+    "group": "dog",
+    "file": "/test-audio/dog/57596-barking-whining-wav.mp3",
+    "title": "barking whining.wav",
+    "licence": "CC0 1.0",
+    "author": "cognito perceptu",
+    "source": "https://freesound.org/people/cognito%20perceptu/sounds/57596/"
+  },
+  {
+    "group": "dog",
+    "file": "/test-audio/dog/612856-dogs-bark-and-howl.mp3",
+    "title": "Dogs bark and howl",
+    "licence": "CC0 1.0",
+    "author": "Weak_Hero",
+    "source": "https://freesound.org/people/Weak_Hero/sounds/612856/"
+  },
+  {
+    "group": "dog",
+    "file": "/test-audio/dog/654247-dogcrying1.mp3",
+    "title": "DogCrying1",
+    "licence": "CC0 1.0",
+    "author": "RamomLandim",
+    "source": "https://freesound.org/people/RamomLandim/sounds/654247/"
+  },
+  {
+    "group": "dog",
+    "file": "/test-audio/dog/749351-barking-inez-2.mp3",
+    "title": "Barking Inez 2",
+    "licence": "CC0 1.0",
+    "author": "wateenfotos",
+    "source": "https://freesound.org/people/wateenfotos/sounds/749351/"
+  },
+  {
+    "group": "dog",
     "file": "/test-audio/dog/dog-barking.webm",
     "title": "Dog barking.webm",
     "licence": "CC BY-SA 4.0",
@@ -41,6 +113,110 @@
   },
   {
     "group": "control",
+    "file": "/test-audio/control/193866-door-knock-38-wav.mp3",
+    "title": "Door Knock - 38.wav",
+    "licence": "CC0 1.0",
+    "author": "Ligidium",
+    "source": "https://freesound.org/people/Ligidium/sounds/193866/"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/369847-smoke-detector-alarm-distant-neighbori.mp3",
+    "title": "Smoke detector alarm, distant neighboring room perspective.wav",
+    "licence": "CC0 1.0",
+    "author": "SpliceSound",
+    "source": "https://freesound.org/people/SpliceSound/sounds/369847/"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/384116-washing-machine-moderate-spin-wav.mp3",
+    "title": "washing machine Moderate Spin .wav",
+    "licence": "CC0 1.0",
+    "author": "afnan808",
+    "source": "https://freesound.org/people/afnan808/sounds/384116/"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/398741-rain-outside-window-wav.mp3",
+    "title": "rain - outside window.wav",
+    "licence": "CC0 1.0",
+    "author": "Anthousai",
+    "source": "https://freesound.org/people/Anthousai/sounds/398741/"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/407207-room-tone-small-distant-wind-through-t.mp3",
+    "title": "room tone small distant wind through trees and traffic from open window short Kampala, Uganda, Africa 2016.wav",
+    "licence": "CC0 1.0",
+    "author": "kyles",
+    "source": "https://freesound.org/people/kyles/sounds/407207/"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/470588-microwave-buttons-beep.mp3",
+    "title": "Microwave Buttons Beep",
+    "licence": "CC0 1.0",
+    "author": "mrrap4food",
+    "source": "https://freesound.org/people/mrrap4food/sounds/470588/"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/546088-keyboard-typing-6-hhkb-topre.mp3",
+    "title": "Keyboard Typing 6 (HHKB, Topre)",
+    "licence": "CC0 1.0",
+    "author": "grcekh",
+    "source": "https://freesound.org/people/grcekh/sounds/546088/"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/740110-large-refrigerator-compressor-hum-1.mp3",
+    "title": "Large Refrigerator compressor hum 1",
+    "licence": "CC0 1.0",
+    "author": "FOSSarts",
+    "source": "https://freesound.org/people/FOSSarts/sounds/740110/"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/740168-water-boiling-inside-electric-kettle-1.mp3",
+    "title": "water boiling inside electric kettle 1",
+    "licence": "CC0 1.0",
+    "author": "FOSSarts",
+    "source": "https://freesound.org/people/FOSSarts/sounds/740168/"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/740406-dropping-keys-on-solid-wood-counter-1.mp3",
+    "title": "dropping keys on solid wood counter 1",
+    "licence": "CC0 1.0",
+    "author": "FOSSarts",
+    "source": "https://freesound.org/people/FOSSarts/sounds/740406/"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/817677-250726-vacuum-cleaner-philips-powerpro.mp3",
+    "title": "250726 - Vacuum cleaner - Philips PowerPro 7000 series - head on floor (silent vaccuming) (head brush up) 2",
+    "licence": "CC0 1.0",
+    "author": "Sadiquecat",
+    "source": "https://freesound.org/people/Sadiquecat/sounds/817677/"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/832998-chair-scrape.mp3",
+    "title": "Chair Scrape",
+    "licence": "CC0 1.0",
+    "author": "bangcorrupt",
+    "source": "https://freesound.org/people/bangcorrupt/sounds/832998/"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/845919-talking-crowd.mp3",
+    "title": "talking crowd",
+    "licence": "CC0 1.0",
+    "author": "nincamindza07",
+    "source": "https://freesound.org/people/nincamindza07/sounds/845919/"
+  },
+  {
+    "group": "control",
     "file": "/test-audio/control/close-bathroom-door-gravity-sound.wav",
     "title": "Close bathroom door (Gravity Sound).wav",
     "licence": "CC BY 4.0",
@@ -57,14 +233,6 @@
   },
   {
     "group": "control",
-    "file": "/test-audio/control/close-door-gravity-sound.wav",
-    "title": "Close door (Gravity Sound).wav",
-    "licence": "CC BY 4.0",
-    "author": "Gravity Sound",
-    "source": "https://commons.wikimedia.org/wiki/File%3AClose_door_%28Gravity_Sound%29.wav"
-  },
-  {
-    "group": "control",
     "file": "/test-audio/control/close-door-2-gravity-sound.wav",
     "title": "Close door 2 (Gravity Sound).wav",
     "licence": "CC BY 4.0",
@@ -78,6 +246,14 @@
     "licence": "CC BY 4.0",
     "author": "Gravity Sound",
     "source": "https://commons.wikimedia.org/wiki/File%3AClose_door_3_%28Gravity_Sound%29.wav"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/close-door-gravity-sound.wav",
+    "title": "Close door (Gravity Sound).wav",
+    "licence": "CC BY 4.0",
+    "author": "Gravity Sound",
+    "source": "https://commons.wikimedia.org/wiki/File%3AClose_door_%28Gravity_Sound%29.wav"
   },
   {
     "group": "control",

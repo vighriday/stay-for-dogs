@@ -173,7 +173,7 @@ flowchart TD
 Then, on top: three separate onsets inside 1.5&nbsp;s (barking repeats) **or** 1.2&nbsp;s
 unbroken (whining sustains).
 
-### Two things I got badly wrong
+### Three things I got badly wrong
 
 **The first detector never fired at all.** I wrote the obvious rule — loud, in-band, held
 for 400&nbsp;ms. Against a 40-second recording of a barking dog it produced two log
@@ -196,6 +196,10 @@ separated transients. On those three axes it genuinely *is* a bark.
 What separates them is that **a bark is voiced.** It has a pitch, so the waveform repeats.
 A slam is a broadband transient with no periodicity at all.
 
+**And then I was wrong a third time.** That fix scored 5/5 and 0/7 — on the twelve clips
+I had tuned it against. Adding twenty-two clips it had never seen dropped it to 5/9 and
+4/13. The perfect score was overfitting, and I only found out because I went looking.
+
 ```
                  loud?   in band?   voiced?
   bark             yes      yes        yes
@@ -203,9 +207,13 @@ A slam is a broadband transient with no periodicity at all.
   door slam        yes      yes        no    <- the discriminator
   traffic          yes      no         no
   fridge hum       no       no         no
+  human speech     yes      yes        YES   <- and here is the ceiling
 ```
 
-No model, no download, nothing leaves the device.
+No model, no download, nothing leaves the device. But speech has exactly the same
+signature as a bark, and no amount of threshold work fixes that. Identifying *what made
+a sound* rather than *what shape it is* needs a classifier — that's the next thing to
+build, and it's where the honest numbers below run out.
 
 ---
 
@@ -217,35 +225,42 @@ can re-run the sweep yourself** at [https://stay-swart.vercel.app/test](https://
 
 ![The detector test page, run in the browser](docs/screenshots/03-test-results.png)
 
-Shipped defaults, sensitivity 0.5:
+I tuned the detector against an initial 12 clips and it scored perfectly: **5/5 dogs,
+0/7 false positives.** Then I added 22 clips it had never seen — different source,
+including whimpering, crying and yelping, plus household sounds the first set lacked
+like conversation, a washing machine and a smoke alarm.
 
-| | |
-|---|---|
-| Dog clips detected | **5 / 5** |
-| Dog clips that produced a spoken response | **5 / 5** |
-| Household-noise clips that triggered it | **0 / 7** |
-
-How the voicing threshold was chosen:
-
-| threshold | dogs | false positives |
+| | Tuned-on (12) | **Held-out (22)** |
 |---|---|---|
-| 0.30 | 5/5 | 5/7 |
-| 0.50 | 4/5 | 1/7 |
-| 0.65 | 5/5 | 1/7 |
-| **0.75** | **5/5** | **0/7** |
-| 0.80 | 5/5 | 0/7 |
-
-0.75 and 0.80 both sweep clean, so 0.75 was taken as the middle of the plateau rather
-than its edge. The last clip to hold out was a *squeaking* door — a hinge squeak
-genuinely has a pitch, which is exactly what this test looks for.
+| Dogs detected | 5 / 5 | **5 / 9** |
+| False positives | 0 / 7 | **4 / 13** |
 
 > [!IMPORTANT]
-> **The threshold was tuned on these same clips**, so these numbers flatter it. The
-> honest test is a larger set the detector has never seen, which I didn't have time to
-> assemble. Treat 0/7 as *"the idea works"*, not as a measured false-positive rate.
+> **The perfect score was overfitting.** On audio it had never met, the detector finds
+> 56% of dogs and false-alarms on 31% of household noise. That second column is the real
+> number, because it's the only one that describes what happens to somebody who isn't me.
 
-Full per-clip results in **[docs/TEST-RESULTS.md](docs/TEST-RESULTS.md)**. Every clip's
-source and licence in **[public/test-audio/SOURCES.md](public/test-audio/SOURCES.md)**.
+Across all 34 clips: **10/14 dogs, 4/20 false positives.**
+
+### The limitation that matters
+
+One of the false alarms is a recording of people talking. **Human speech is the most
+voiced sound there is**, and it sits right inside 300–2500 Hz — so the voicing test
+can't tell a person from a dog, which means *a television left on will trigger Stay.*
+In a home, that isn't an edge case.
+
+The obvious fix works and I rejected it. Raising the pitch floor from 140 Hz to 300 Hz
+(adult speech is 85–255 Hz, dogs sit above) removes that false alarm — but it costs a
+**whining** clip, and whining is the single most characteristic sound of separation
+distress. Missing a distressed dog is the product failing at its purpose; speaking when
+it shouldn't is annoying and capped at once per 90 s by the cooldown.
+
+So 140 Hz ships, deliberately, and the worse-looking table ships with it.
+
+Full per-clip breakdown, the threshold sweeps, and what each miss has in common:
+**[docs/TEST-RESULTS.md](docs/TEST-RESULTS.md)**. Every clip's source and licence:
+**[public/test-audio/SOURCES.md](public/test-audio/SOURCES.md)** — 22 CC0 clips from
+Freesound, 12 from Wikimedia Commons.
 
 ---
 
@@ -394,9 +409,13 @@ is at [https://stay-swart.vercel.app/privacy](https://stay-swart.vercel.app/priv
 - **A prototype, not a treatment.** A badly anxious dog needs a veterinary behaviourist.
 - **I don't own a dog.** Everything is tested against recorded clips, which is why the
   numbers are published rather than asserted.
-- **The threshold was tuned on the test set.** See the note above.
-- **The test set is small and skewed** — twelve clips, and six of the seven controls are
-  doors, because that is what was freely licensed and redistributable.
+- **Held-out performance is 56% detection, 31% false alarms.** The perfect score was
+  overfitting; the honest number is in the table above.
+- **A television will trigger it.** Human speech is voiced and in-band, and the voicing
+  test cannot tell a person from a dog.
+- **The test set is 34 clips**, which is small, and every clip is a clean recording of a
+  single thing. Real rooms layer sounds; a dog whining over a washing machine is not
+  represented at all.
 - **No room in the measurement.** Clips go straight into the audio graph: no speaker, no
   microphone, no distance, no reverb. Real rooms are harder — hence the sensitivity slider.
 - **Loud, genuinely pitched sounds still get through.** A smoke alarm chirp is a tone and

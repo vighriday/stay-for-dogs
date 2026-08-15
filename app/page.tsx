@@ -139,7 +139,7 @@ export default function Home() {
 const STEPS = [
   {
     title: "It listens",
-    body: "Loud enough, mostly in the 300–2500 Hz range where barks and whines live, repeated or held long enough, and — the one that actually matters indoors — voiced. A bark has a pitch, so its waveform repeats. A door slam is just as loud and sits in the same frequency band, but it has no pitch at all. Checking for that took false alarms on the test set from four in seven down to none.",
+    body: "Loud enough, mostly in the 300–2500 Hz range where barks and whines live, repeated or held long enough, and — the one that actually matters indoors — voiced. A bark has a pitch, so its waveform repeats. A door slam is just as loud and sits in the same frequency band, but it has no pitch at all. Checking for that removed most false alarms from door slams. It does not remove all of them — human speech is voiced too, so a television will still set it off.",
   },
   {
     title: "It waits",
