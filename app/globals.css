@@ -153,6 +153,43 @@
     border-top: 1px solid var(--color-line);
     margin: 0;
   }
+
+  /* Hairline track, square thumb. Deliberately not a rounded pill. */
+  .stay-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+  .stay-slider::-webkit-slider-runnable-track {
+    height: 1px;
+    background: var(--color-line-bright);
+  }
+  .stay-slider::-moz-range-track {
+    height: 1px;
+    background: var(--color-line-bright);
+  }
+  .stay-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    margin-top: -5.5px;
+    background: var(--color-bone);
+    border: 0;
+    border-radius: 0;
+  }
+  .stay-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: var(--color-bone);
+    border: 0;
+    border-radius: 0;
+  }
 }
 
 @layer utilities {
