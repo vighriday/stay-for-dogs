@@ -17,9 +17,17 @@ export default function Home() {
         </h1>
 
         <p className="max-w-[46ch] text-[17px] leading-relaxed text-dim">
-          About one in five dogs panics when it&apos;s left home alone. Stay listens,
-          waits for your dog to go quiet, and answers in your voice — different words
-          every time, never a loop.
+          <a
+            href="https://www.sciencedirect.com/science/article/pii/S1558787816300569"
+            target="_blank"
+            rel="noreferrer noopener"
+            className="underline decoration-line underline-offset-4 hover:decoration-bone"
+          >
+            Roughly one dog in six
+          </a>{" "}
+          shows real distress when it&apos;s left home alone. Stay listens, waits for
+          your dog to go quiet, and answers in your voice — different words every time,
+          never a loop.
         </p>
       </section>
 
@@ -46,10 +54,19 @@ export default function Home() {
         <span className="label">Why this works</span>
         <div className="flex max-w-[62ch] flex-col gap-6 text-[17px] leading-relaxed">
           <p>
-            In 2021 a Finnish app called Digital Dogsitter was put through a proper trial.
-            It listened for the dog crying and played back a short recording of the
-            owner&apos;s voice. It worked — less barking, less howling, and owners
-            reported less destroyed furniture eight months later.
+            In 2021 a Finnish app called Digital Dogsitter was{" "}
+            <a
+              href="https://www.sciencedirect.com/science/article/pii/S0168159121002471"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="underline decoration-line underline-offset-4 hover:decoration-bone"
+            >
+              put through a proper trial
+            </a>
+            . It listened for the dog crying and played back a short recording of the
+            owner&apos;s voice. Across 40 dogs, total vocalisation dropped by 95.7% after
+            two weeks. At an eight-month follow-up, most owners still felt it was
+            working.
           </p>
           <p>
             But the same literature carries a warning. A single clip, looped identically,

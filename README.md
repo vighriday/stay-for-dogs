@@ -12,12 +12,13 @@ Built for the [DEV Weekend Challenge: Dog Days Edition](https://dev.to/challenge
 
 ## Why
 
-About one in five dogs shows real distress when it's left alone.
+A [survey of 3,284 dogs](https://www.sciencedirect.com/science/article/pii/S1558787816300569) put separation anxiety at 17.2% — roughly one dog in six.
 
-In 2021 a Finnish app called Digital Dogsitter was put through a proper trial: it
-listened for the dog crying and played back a short recording of the owner's voice. It
-worked — less barking, less howling, and owners reported less destroyed furniture eight
-months later.
+In 2021 a Finnish app called Digital Dogsitter was [put through a proper trial](https://www.sciencedirect.com/science/article/pii/S0168159121002471): it
+listened for the dog crying and played back a short recording of the owner's voice. Across 40
+dogs, total vocalisation dropped by 95.7% after two weeks (P < 0.001). At an eight-month
+follow-up, 68.7% of the owners who replied still felt it was helping.
+(Tiira, *Applied Animal Behaviour Science* 243:105460.)
 
 But the same literature carries a warning. A single clip, looped identically, can flip
 from comfort into a cue — the sound that means you're gone. In 2021 there was no way
