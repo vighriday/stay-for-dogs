@@ -1,0 +1,98 @@
+[
+  {
+    "group": "dog",
+    "file": "/test-audio/dog/dog-barking.webm",
+    "title": "Dog barking.webm",
+    "licence": "CC BY-SA 4.0",
+    "author": "User:Dr. Nono YesMaybe",
+    "source": "https://commons.wikimedia.org/wiki/File%3ADog_barking.webm"
+  },
+  {
+    "group": "dog",
+    "file": "/test-audio/dog/paisaje-sonoro-perros-voces-autos-en-la-noch.mp3",
+    "title": "Paisaje sonoro perros voces autos en la noche 01.mp3",
+    "licence": "CC BY-SA 4.0",
+    "author": "Luis Alvaz",
+    "source": "https://commons.wikimedia.org/wiki/File%3APaisaje_sonoro_perros_voces_autos_en_la_noche_01.mp3"
+  },
+  {
+    "group": "dog",
+    "file": "/test-audio/dog/perro-hembra-ladrando.mp3",
+    "title": "Perro hembra ladrando.mp3",
+    "licence": "CC BY-SA 4.0",
+    "author": "Luis Alvaz",
+    "source": "https://commons.wikimedia.org/wiki/File%3APerro_hembra_ladrando.mp3"
+  },
+  {
+    "group": "dog",
+    "file": "/test-audio/dog/perros-ligeti-y-malena-ladrando.wav",
+    "title": "Perros (Ligeti y Malena) ladrando.wav",
+    "licence": "CC BY-SA 4.0",
+    "author": "Luis Alvaz",
+    "source": "https://commons.wikimedia.org/wiki/File%3APerros_%28Ligeti_y_Malena%29_ladrando.wav"
+  },
+  {
+    "group": "dog",
+    "file": "/test-audio/dog/soundscape-cricket-and-dogs.mp3",
+    "title": "Soundscape (cricket and dogs).mp3",
+    "licence": "CC BY-SA 4.0",
+    "author": "Luis Alvaz",
+    "source": "https://commons.wikimedia.org/wiki/File%3ASoundscape_%28cricket_and_dogs%29.mp3"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/close-bathroom-door-gravity-sound.wav",
+    "title": "Close bathroom door (Gravity Sound).wav",
+    "licence": "CC BY 4.0",
+    "author": "Gravity Sound",
+    "source": "https://commons.wikimedia.org/wiki/File%3AClose_bathroom_door_%28Gravity_Sound%29.wav"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/close-closet-door-gravity-sound.wav",
+    "title": "Close closet door (Gravity Sound).wav",
+    "licence": "CC BY 4.0",
+    "author": "Gravity Sound",
+    "source": "https://commons.wikimedia.org/wiki/File%3AClose_closet_door_%28Gravity_Sound%29.wav"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/close-door-gravity-sound.wav",
+    "title": "Close door (Gravity Sound).wav",
+    "licence": "CC BY 4.0",
+    "author": "Gravity Sound",
+    "source": "https://commons.wikimedia.org/wiki/File%3AClose_door_%28Gravity_Sound%29.wav"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/close-door-2-gravity-sound.wav",
+    "title": "Close door 2 (Gravity Sound).wav",
+    "licence": "CC BY 4.0",
+    "author": "Gravity Sound",
+    "source": "https://commons.wikimedia.org/wiki/File%3AClose_door_2_%28Gravity_Sound%29.wav"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/close-door-3-gravity-sound.wav",
+    "title": "Close door 3 (Gravity Sound).wav",
+    "licence": "CC BY 4.0",
+    "author": "Gravity Sound",
+    "source": "https://commons.wikimedia.org/wiki/File%3AClose_door_3_%28Gravity_Sound%29.wav"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/close-squeaky-door-gravity-sound.wav",
+    "title": "Close squeaky door (Gravity Sound).wav",
+    "licence": "CC BY 4.0",
+    "author": "Gravity Sound",
+    "source": "https://commons.wikimedia.org/wiki/File%3AClose_squeaky_door_%28Gravity_Sound%29.wav"
+  },
+  {
+    "group": "control",
+    "file": "/test-audio/control/footstep-on-gravel-gravity-sound.mp3",
+    "title": "Footstep on Gravel (Gravity Sound).mp3",
+    "licence": "CC BY 4.0",
+    "author": "Gravity Sound",
+    "source": "https://commons.wikimedia.org/wiki/File%3AFootstep_on_Gravel_%28Gravity_Sound%29.mp3"
+  }
+]

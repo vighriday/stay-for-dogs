@@ -154,6 +154,9 @@ export async function runOffline(
 
 export interface PlayThroughHandle {
   stop: () => void;
+  /** Same interlock as a live session: the detector goes deaf while Stay talks. */
+  setSpeaking: (v: boolean) => void;
+  markSpoke: () => void;
   /** Resolves when the clip finishes on its own. */
   done: Promise<void>;
 }
@@ -243,6 +246,12 @@ export async function playThrough(
     stop() {
       teardown();
       if (!settled) settled = true;
+    },
+    setSpeaking(v: boolean) {
+      node.port.postMessage({ type: "speaking", value: v });
+    },
+    markSpoke() {
+      node.port.postMessage({ type: "spoke" });
     },
     done,
   };
