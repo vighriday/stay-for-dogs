@@ -1,26 +1,191 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ─────────────────────────────────────────────────────────────
+   STAY — "one lamp left on"
+
+   Warm dark, not cold dark. The colour of a house at dusk with
+   one light still on. Dark only, deliberately: this runs for
+   hours in a dim room next to an animal.
+
+   The rule that holds the whole thing together:
+   AMBER MEANS STAY SPOKE. Nothing else is ever amber.
+   ───────────────────────────────────────────────────────────── */
+
+@theme {
+  --color-ink: #15110d;
+  --color-ink-raised: #1f1a15;
+  --color-ink-well: #100d0a;
+  --color-line: #2c251e;
+  --color-line-bright: #3d342a;
+  --color-bone: #ede6da;
+  --color-dim: #8a8075;
+  --color-dimmer: #5f574e;
+  --color-lamp: #e8a33d;
+  --color-moss: #7c8f6b;
+  --color-clay: #c4705a;
+
+  --font-display: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SF Mono", monospace;
+
+  --radius-none: 0;
+  --radius-xs: 2px;
+  --radius-pill: 999px;
+
+  --ease-draw: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-ink);
+    color: var(--color-bone);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Focus is always bone, never amber. Amber is reserved. */
+  :focus-visible {
+    outline: 2px solid var(--color-bone);
+    outline-offset: 2px;
+    border-radius: 1px;
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::selection {
+    background: var(--color-lamp);
+    color: var(--color-ink);
+  }
+
+  button,
+  input,
+  textarea {
+    font: inherit;
+    color: inherit;
+  }
+
+  input,
+  textarea {
+    background: var(--color-ink-well);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-xs);
+    padding: 10px 12px;
+    width: 100%;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-dimmer);
+  }
+  input:hover,
+  textarea:hover {
+    border-color: var(--color-line-bright);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-line-bright);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Mono label. Used for every measurement and every field label. */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-dim);
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The human voice. Newsreader, tight, generous leading. */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+    font-variation-settings: "opsz" 60;
+  }
+
+  .said {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+    font-variation-settings: "opsz" 32;
+  }
+
+  .rule {
+    border: 0;
+    border-top: 1px solid var(--color-line);
+    margin: 0;
+  }
+}
+
+@layer utilities {
+  .column {
+    width: 100%;
+    max-width: 760px;
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  @media (max-width: 480px) {
+    .column {
+      padding-inline: 20px;
+    }
+  }
+
+  /* Full-bleed escape from .column for the strip */
+  .bleed {
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* The strip is data, not decoration — it keeps updating under
+   reduced-motion. Only the choreography is removed. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

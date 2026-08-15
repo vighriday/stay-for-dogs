@@ -1,0 +1,103 @@
+/** How Stay got hold of the owner's voice. */
+export type VoicePath = "clone" | "byov" | "demo";
+
+/** What a stored ElevenLabs key is actually allowed to do. */
+export interface VoiceCapabilities {
+  tier: string;
+  /** Paid plans can create a voice through the API. Free plans cannot. */
+  canCreateVoice: boolean;
+  charactersLeft: number;
+  characterLimit: number;
+  voiceSlotsUsed: number;
+  voiceSlotLimit: number;
+}
+
+export interface DogProfile {
+  name: string;
+  nickname: string;
+  likes: string[];
+  bannedWords: string[];
+}
+
+export type Mood = "calm" | "reassure" | "settle";
+
+/** Which rule released a response — see the wait-for-quiet state machine. */
+export type SpeakTrigger = "settled" | "ceiling" | "manual";
+
+export type EventKind =
+  | "session-start"
+  | "session-end"
+  | "upset"
+  | "settled"
+  | "spoke"
+  | "held";
+
+export interface StayEvent {
+  id: string;
+  at: number;
+  kind: EventKind;
+  /** Peak loudness during the episode, dBFS. Negative. */
+  peakDb?: number;
+  /** Share of energy inside the 300–2500 Hz band, 0–1. */
+  bandRatio?: number;
+  /** How long the dog vocalised, ms. */
+  durationMs?: number;
+  line?: string;
+  trigger?: SpeakTrigger;
+  /** True when the line came from the offline bank rather than Gemini. */
+  fromBank?: boolean;
+}
+
+export interface BehaviourScores {
+  pacingPercent: number;
+  doorFixations: number;
+  vocalEvents: number;
+  settleLatencySec: number | null;
+  notes: string;
+}
+
+export type VocalKind = "whine" | "separation-bark" | "alert-bark" | "howl" | "other";
+
+export interface VocalReading {
+  kind: VocalKind;
+  confidence: number;
+  note: string;
+}
+
+/** Every route failure has this shape. No bare 500s. */
+export interface ApiError {
+  error: { code: string; message: string; hint?: string };
+}
+
+export const DETECTOR_DEFAULTS = {
+  /** Frame size at 48 kHz ≈ 43 ms. */
+  frameSize: 2048,
+  /** Barks and whines live here. Traffic rumble and HVAC do not. */
+  bandLowHz: 300,
+  bandHighHz: 2500,
+  minBandRatio: 0.55,
+  /** Noise must hold this long before it counts as an episode. */
+  sustainMs: 400,
+  /** Quiet this long after an episode releases a response. */
+  quietMs: 2500,
+  /** Unbroken noise this long responds anyway — never ignore a frantic dog. */
+  ceilingMs: 20_000,
+  /** No second response inside this window. */
+  cooldownMs: 90_000,
+  /** Detection stays deaf this long after Stay's own voice stops. */
+  playbackTailMs: 3000,
+  /** Episode ends after this much quiet with no response. */
+  episodeEndMs: 10_000,
+} as const;
+
+export const LIMITS = {
+  minSampleSeconds: 60,
+  targetSampleSeconds: 180,
+  maxClipSeconds: 60,
+  maxClipBytes: 20 * 1024 * 1024,
+  maxAudioClipBytes: 5 * 1024 * 1024,
+  lineBufferTarget: 10,
+  lineBufferFloor: 4,
+  maxLineWords: 14,
+  minLineWords: 3,
+} as const;
