@@ -19,21 +19,22 @@ in its owner's voice — different words every time, generated fresh, never a lo
 
 ---
 
-```text
- QUIET                     UPSET                       STAY SPOKE
-┌──────────────────────────────────────────────────────────────────────────┐
-│▁▁▁▁▁▁▁▁▁▁▁▁▂▁▁▁▁▁▁▓▓▓▓▓▓▓▓▓▓▒▒▒▒▁▁▁│▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁│
-└──────────────────────────────────────────────────────────────────────────┘
-  19:04           19:11                19:22  ▲                 19:26
-                                             │
-                                      "Easy, Biscuit.
-                                       You're alright."
-```
+![Stay's landing page](docs/screenshots/01-landing.png)
 
 A session is drawn as an **ethogram strip** — the horizontal band chart behavioural
 scientists use to record animal behaviour over time. Quiet is a hairline. Distress
-swells, easing back as the dog settles. A single amber tick marks each time Stay spoke.
-Amber appears nowhere else in the application.
+swells in clay, easing to moss as the dog settles. A single amber tick marks each time
+Stay spoke. Amber appears nowhere else in the application.
+
+Here is a real session, thirty seconds in:
+
+![A live session: the dog gets upset, goes quiet, and Stay answers](docs/screenshots/02-demo-session.png)
+
+Read the log from the bottom up. The dog got upset at `22:48:45`. Stay said nothing while
+it was still barking. At `22:48:50`, five seconds later, the dog went quiet and *then*
+Stay spoke — the log records the reason as **"answered the quiet."**
+
+That gap is the entire product.
 
 ---
 
@@ -211,6 +212,8 @@ No model, no download, nothing leaves the device.
 I don't own a dog. So rather than film one dog once and call it proof, the detector runs
 against recorded clips and **the numbers are published, with the clips in the repo so you
 can re-run the sweep yourself** at `/test`.
+
+![The detector test page, run in the browser](docs/screenshots/03-test-results.png)
 
 Shipped defaults, sensitivity 0.5:
 
