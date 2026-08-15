@@ -1,0 +1,10 @@
+[
+  { "text": "Easy, Biscuit. You're alright.", "file": "/demo/01-easy-biscuit-you-re-alright.mp3" },
+  { "text": "That's it. Settle down now.", "file": "/demo/02-that-s-it-settle-down-now.mp3" },
+  { "text": "Good boy. Nice and quiet.", "file": "/demo/03-good-boy-nice-and-quiet.mp3" },
+  { "text": "You're safe. Everything's fine.", "file": "/demo/04-you-re-safe-everything-s-fine.mp3" },
+  { "text": "Lie down, Biscuit. Good boy.", "file": "/demo/05-lie-down-biscuit-good-boy.mp3" },
+  { "text": "Nothing to worry about here.", "file": "/demo/06-nothing-to-worry-about-here.mp3" },
+  { "text": "Steady now. Steady.", "file": "/demo/07-steady-now-steady.mp3" },
+  { "text": "You're doing so well.", "file": "/demo/08-you-re-doing-so-well.mp3" }
+]
