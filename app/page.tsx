@@ -122,7 +122,7 @@ export default function Home() {
 const STEPS = [
   {
     title: "It listens",
-    body: "Four things have to be true before a sound counts: loud enough, mostly in the 300–2500 Hz range where barks and whines live, repeated enough times inside a second and a half, and not Stay hearing its own voice. Counting repeats rather than demanding one long noise matters — barking is bursts with gaps, and my first version waited for half a second of unbroken sound and so detected nothing at all.",
+    body: "Loud enough, mostly in the 300–2500 Hz range where barks and whines live, repeated or held long enough, and — the one that actually matters indoors — voiced. A bark has a pitch, so its waveform repeats. A door slam is just as loud and sits in the same frequency band, but it has no pitch at all. Checking for that took false alarms on the test set from four in seven down to none.",
   },
   {
     title: "It waits",

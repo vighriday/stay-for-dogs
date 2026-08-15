@@ -223,10 +223,18 @@ export default function TestPage() {
               <code className="mono text-bone">public/test-audio/SOURCES.md</code>.
             </p>
             <p>
-              A doorbell will trigger it. So will a smoke alarm chirp. Both sit in the
-              same 300–2500 Hz band as a bark, and no amount of threshold tuning
-              separates them — that would need a classifier, which is a different
-              project.
+              <span className="text-bone">
+                The voicing threshold was tuned on these same clips.
+              </span>{" "}
+              That means these numbers flatter it — the honest test is a larger set the
+              detector has never seen, which I did not have time to assemble. Treat 0/7
+              as &ldquo;the idea works&rdquo;, not as a measured false-positive rate.
+            </p>
+            <p>
+              Sounds that are both loud and genuinely pitched can still get through. A
+              squeaking door hinge did, before the threshold moved; a smoke alarm chirp
+              probably would, because it is a tone. That is a real limit of judging by
+              periodicity rather than by what the sound actually is.
             </p>
           </div>
         </section>

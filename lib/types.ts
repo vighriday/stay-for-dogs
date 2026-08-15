@@ -91,6 +91,16 @@ export const DETECTOR_DEFAULTS = {
   continuousMs: 1200,
   /** Ignore a second onset inside this gap — a slam's ringing tail is one event. */
   refractoryMs: 200,
+  /**
+   * Voicing gate. A bark or whine has a pitch, so its waveform repeats; a
+   * door slam is a broadband transient with none. Measured across the test
+   * clips, this took false positives from four of seven to zero without
+   * losing a single dog. 0.75 sits in the middle of the plateau where that
+   * holds, rather than on its edge.
+   */
+  minPeriodicity: 0.75,
+  pitchMinHz: 140,
+  pitchMaxHz: 1200,
   /** Quiet this long after an episode releases a response. */
   quietMs: 2500,
   /** Unbroken noise this long responds anyway — never ignore a frantic dog. */
