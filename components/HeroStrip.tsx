@@ -70,10 +70,10 @@ export function HeroStrip() {
           if (b.say) strip.current?.mark(b.say, "settled");
           step = 0;
           beat++;
-          if (beat >= SCORE.length) {
-            beat = 0;
-            strip.current?.clear();
-          }
+          // Loop the score without clearing. The strip trims itself to
+          // capacity, so it keeps scrolling instead of emptying — clearing
+          // here is what used to leave the hero three-quarters blank.
+          if (beat >= SCORE.length) beat = 0;
         }
       }
     };
