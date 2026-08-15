@@ -64,38 +64,33 @@ Stay is the version where the voice can say things it never said.
 Everything that touches a third-party key runs server-side. The microphone never does.
 
 ```mermaid
-flowchart LR
-    subgraph browser["Your browser"]
+flowchart TB
+    subgraph browser["YOUR BROWSER — the microphone audio never leaves this box"]
+        direction TB
         mic["Microphone"]
-        worklet["AudioWorklet detector<br/>(audio thread)"]
-        queue["Pre-rendered<br/>audio queue"]
-        strip["Ethogram strip<br/>+ timeline"]
+        worklet["AudioWorklet detector<br/>runs on the audio thread"]
+        strip["Ethogram strip + timeline"]
+        queue["Pre-rendered audio queue"]
         spk["Speaker"]
+
+        mic -->|"loudness and band ratio.<br/>never the audio itself"| worklet
+        worklet --> strip
+        worklet -->|"the dog has settled"| queue
+        queue --> spk
+        spk -.->|"detector goes deaf while<br/>Stay speaks, plus 3s after"| worklet
     end
 
-    subgraph server["Next.js route handlers"]
-        el["/api/el/*"]
-        gem["/api/gemini/*"]
+    queue ==>|"at session start only"| api
+
+    subgraph server["NEXT.JS ROUTE HANDLERS — every API key lives here, never in the client"]
+        direction TB
+        api["/api/gemini/lines&nbsp;&nbsp;·&nbsp;&nbsp;/api/el/tts"]
     end
 
-    subgraph ext["External"]
-        eleven["ElevenLabs"]
-        gemini["Gemini 2.5 Flash"]
-    end
-
-    mic -->|"loudness + band ratio only,<br/>never the audio"| worklet
-    worklet --> strip
-    worklet -->|"dog settled"| queue
-    queue --> spk
-    spk -.->|"detector goes deaf<br/>while speaking"| worklet
-
-    queue -->|"session start only"| gem
-    gem <--> gemini
-    gem -->|"10 calming lines"| queue
-
-    queue -->|"session start only"| el
-    el <--> eleven
-    el -->|"mp3 per line"| queue
+    api --> gemini["Gemini 2.5 Flash<br/>writes 10 calming lines"]
+    api --> eleven["ElevenLabs<br/>speaks them in your voice"]
+    gemini -.->|"text"| queue
+    eleven -.->|"mp3 per line"| queue
 ```
 
 **The dotted line is the most important one in the diagram.** Stay plays audio out of the
