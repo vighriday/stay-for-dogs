@@ -80,7 +80,7 @@ export function VoiceRecorder({
       const mime = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
         ? "audio/webm;codecs=opus"
         : "audio/webm";
-      const rec = new MediaRecorder(s, { mimeType: mime, audioBitsPerSecond: 128_000 });
+      const rec = new MediaRecorder(s, { mimeType: mime, audioBitsPerSecond: 64_000 });
       rec.ondataavailable = (e) => e.data.size && chunks.current.push(e.data);
       rec.onstop = () => {
         setBlob(new Blob(chunks.current, { type: mime }));

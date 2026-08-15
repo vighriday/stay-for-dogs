@@ -178,7 +178,7 @@ function VocalSection() {
             if (!f) return;
             if (f.size > LIMITS.maxAudioClipBytes) {
               setError(
-                `That file is ${(f.size / 1024 / 1024).toFixed(1)} MB. The limit is 5 MB.`,
+                `That file is ${(f.size / 1024 / 1024).toFixed(1)} MB. The limit is 3 MB.`,
               );
               return;
             }
@@ -188,7 +188,7 @@ function VocalSection() {
         <Button kind="secondary" onClick={() => input.current?.click()} busy={busy}>
           Upload your own clip
         </Button>
-        <span className="text-[13px] text-dim">Up to 30 seconds, 5 MB.</span>
+        <span className="text-[13px] text-dim">Up to 30 seconds, 3 MB.</span>
       </div>
 
       {error && (
@@ -264,7 +264,7 @@ function VideoSection() {
 
   const score = async (file: File) => {
     if (file.size > LIMITS.maxClipBytes) {
-      setError(`That file is ${(file.size / 1024 / 1024).toFixed(1)} MB. The limit is 20 MB.`);
+      setError(`That file is ${(file.size / 1024 / 1024).toFixed(1)} MB. The limit is 4 MB.`);
       return;
     }
     setBusy(true);
@@ -324,7 +324,8 @@ function VideoSection() {
           Choose a clip
         </Button>
         <span className="text-[13px] text-dim">
-          Up to {LIMITS.maxClipSeconds} seconds, 20 MB. MP4, WebM or MOV.
+          Up to {LIMITS.maxClipSeconds} seconds, 4 MB — about half a minute of phone
+          video. MP4, WebM or MOV.
         </span>
       </div>
 

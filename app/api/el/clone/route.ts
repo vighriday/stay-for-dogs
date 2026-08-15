@@ -6,7 +6,9 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-const MAX_SAMPLE_BYTES = 25 * 1024 * 1024;
+// Vercel caps a serverless request body at 4.5 MB. At 64 kbps that is well
+// over ten minutes of speech, so the limit costs nothing in practice.
+const MAX_SAMPLE_BYTES = 4 * 1024 * 1024;
 
 /**
  * Instant Voice Cloning. Paid plans only.
@@ -51,7 +53,7 @@ export async function POST(req: Request) {
       return fail(
         413,
         "sample_too_large",
-        `That recording is ${(sample.size / 1024 / 1024).toFixed(1)} MB. The limit is 25 MB.`,
+        `That recording is ${(sample.size / 1024 / 1024).toFixed(1)} MB. The limit is 4 MB.`,
       );
     }
 

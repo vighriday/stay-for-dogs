@@ -116,9 +116,14 @@ export const DETECTOR_DEFAULTS = {
 export const LIMITS = {
   minSampleSeconds: 60,
   targetSampleSeconds: 180,
-  maxClipSeconds: 60,
-  maxClipBytes: 20 * 1024 * 1024,
-  maxAudioClipBytes: 5 * 1024 * 1024,
+  maxClipSeconds: 45,
+  /**
+   * Vercel caps a serverless request body at 4.5 MB, so anything larger fails
+   * in production while working perfectly on localhost. 4 MB leaves room for
+   * the multipart overhead and is roughly 30-45 seconds of phone video.
+   */
+  maxClipBytes: 4 * 1024 * 1024,
+  maxAudioClipBytes: 3 * 1024 * 1024,
   lineBufferTarget: 10,
   lineBufferFloor: 4,
   maxLineWords: 14,
