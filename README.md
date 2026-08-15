@@ -13,7 +13,9 @@ in its owner's voice — different words every time, generated fresh, never a lo
 [![Gemini](https://img.shields.io/badge/Gemini-2.5%20Flash-4285F4?logo=googlegemini&logoColor=white)](https://ai.google.dev)
 [![Licence](https://img.shields.io/badge/licence-MIT-green)](LICENSE)
 
-**[Demo — no key, no microphone](#running-it-locally) · [Test results](#test-results) · [Privacy](#privacy)**
+### [**Try it live →**](https://stay-swart.vercel.app)
+
+**[Demo — no key, no microphone](https://stay-swart.vercel.app/demo) · [Re-run the detector tests](https://stay-swart.vercel.app/test) · [Privacy](https://stay-swart.vercel.app/privacy)**
 
 </div>
 
@@ -211,7 +213,7 @@ No model, no download, nothing leaves the device.
 
 I don't own a dog. So rather than film one dog once and call it proof, the detector runs
 against recorded clips and **the numbers are published, with the clips in the repo so you
-can re-run the sweep yourself** at `/test`.
+can re-run the sweep yourself** at [https://stay-swart.vercel.app/test](https://stay-swart.vercel.app/test).
 
 ![The detector test page, run in the browser](docs/screenshots/03-test-results.png)
 
@@ -330,6 +332,8 @@ npm run dev
 
 Then open <http://localhost:3000/demo> — **it needs no keys at all.**
 
+Or skip all of that and use the deployed one: <https://stay-swart.vercel.app/demo>
+
 | Variable | Needed for |
 |---|---|
 | `GEMINI_API_KEY` | Writing calming lines, scoring clips. [Free tier](https://aistudio.google.com/apikey). |
@@ -381,7 +385,7 @@ Nothing is recorded, buffered to disk, or uploaded.
 
 That's a property of how it's built rather than a promise: there is no code path that
 sends microphone data anywhere. The full answer, including how your API key is handled,
-is at `/privacy`.
+is at [https://stay-swart.vercel.app/privacy](https://stay-swart.vercel.app/privacy).
 
 ---
 
