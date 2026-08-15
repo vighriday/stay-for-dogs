@@ -76,8 +76,21 @@ export const DETECTOR_DEFAULTS = {
   bandLowHz: 300,
   bandHighHz: 2500,
   minBandRatio: 0.55,
-  /** Noise must hold this long before it counts as an episode. */
-  sustainMs: 400,
+  /**
+   * Two ways an episode can start, because dogs make two different noises.
+   *
+   * Barking is repetitive: separate onsets with gaps between them. Counting
+   * onsets inside a window catches that, and it is also what keeps a door
+   * slam out — a slam is loud and in-band, but it is one event, not three.
+   *
+   * Whining and howling are continuous instead of repetitive, so an unbroken
+   * stretch counts on its own.
+   */
+  onsetWindowMs: 1500,
+  onsetCount: 3,
+  continuousMs: 1200,
+  /** Ignore a second onset inside this gap — a slam's ringing tail is one event. */
+  refractoryMs: 200,
   /** Quiet this long after an episode releases a response. */
   quietMs: 2500,
   /** Unbroken noise this long responds anyway — never ignore a frantic dog. */

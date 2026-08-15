@@ -122,7 +122,7 @@ export default function Home() {
 const STEPS = [
   {
     title: "It listens",
-    body: "Four things have to be true before a sound counts: loud enough, mostly in the 300–2500 Hz range where barks and whines live, held for at least four tenths of a second, and not Stay hearing its own voice. Traffic, the fridge and a door slamming all get ignored.",
+    body: "Four things have to be true before a sound counts: loud enough, mostly in the 300–2500 Hz range where barks and whines live, repeated enough times inside a second and a half, and not Stay hearing its own voice. Counting repeats rather than demanding one long noise matters — barking is bursts with gaps, and my first version waited for half a second of unbroken sound and so detected nothing at all.",
   },
   {
     title: "It waits",

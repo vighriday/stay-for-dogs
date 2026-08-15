@@ -110,7 +110,10 @@ export async function startListening(
     processorOptions: {
       sensitivity,
       minBandRatio: DETECTOR_DEFAULTS.minBandRatio,
-      sustainMs: DETECTOR_DEFAULTS.sustainMs,
+      onsetWindowMs: DETECTOR_DEFAULTS.onsetWindowMs,
+      onsetCount: DETECTOR_DEFAULTS.onsetCount,
+      continuousMs: DETECTOR_DEFAULTS.continuousMs,
+      refractoryMs: DETECTOR_DEFAULTS.refractoryMs,
       quietMs: DETECTOR_DEFAULTS.quietMs,
       ceilingMs: DETECTOR_DEFAULTS.ceilingMs,
       episodeEndMs: DETECTOR_DEFAULTS.episodeEndMs,

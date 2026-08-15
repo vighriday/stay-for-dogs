@@ -19,7 +19,7 @@ import type { StayEvent } from "@/lib/types";
  * network beyond the static files.
  */
 
-type Phase = "loading" | "ready" | "running" | "done" | "failed";
+type Phase = "idle" | "loading" | "ready" | "running" | "done" | "failed";
 type DogState = "quiet" | "upset" | "settling" | "holding";
 
 const MODE: Record<DogState, 0 | 1 | 2 | 3> = {
@@ -35,7 +35,7 @@ const DOG_NAME = "Biscuit";
 let seq = 0;
 
 export default function DemoPage() {
-  const [phase, setPhase] = useState<Phase>("loading");
+  const [phase, setPhase] = useState<Phase>("idle");
   const [dogState, setDogState] = useState<DogState>("quiet");
   const [events, setEvents] = useState<StayEvent[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -201,7 +201,7 @@ export default function DemoPage() {
       </div>
 
       <div className="column mt-12 flex flex-1 flex-col gap-10">
-        {(phase === "loading" || phase === "ready") && (
+        {(phase === "idle" || phase === "loading" || phase === "ready") && (
           <div className="flex flex-col gap-6">
             <p className="max-w-prose text-dim">
               This plays a real recording of a barking dog through the same detector a live
@@ -288,8 +288,9 @@ function headline(
   dog: DogState,
   loaded: { done: number; total: number },
 ): string {
-  if (phase === "loading") return loaded.total ? "Loading the demo." : "Ready when you are.";
-  if (phase === "ready") return "Ready when you are.";
+  if (phase === "idle") return "Ready when you are.";
+  if (phase === "loading") return "Loading the demo.";
+  if (phase === "ready") return "Loaded. Sound on.";
   if (phase === "failed") return "The demo couldn't load.";
   if (phase === "done") return "That's the whole loop.";
 

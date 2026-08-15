@@ -39,6 +39,10 @@ const SCORE: Beat[] = [
   { span: 110, mode: 0, db: -57 },
 ];
 
+/** Wide enough to fill any screen before the first paint, with room to scroll. */
+const CAPACITY = 3200;
+const PREFILL = 2600;
+
 export function HeroStrip() {
   const strip = useRef<StripHandle | null>(null);
 
@@ -74,11 +78,12 @@ export function HeroStrip() {
       }
     };
 
-    if (reduced) {
-      // Draw the whole shape at once and leave it. Still data, no motion.
-      advance(SCORE.reduce((n, b) => n + b.span, 0));
-      return;
-    }
+    // Fill the strip before the first paint, wide enough for any screen. An
+    // instrument that starts empty reads as broken, and the hero has one job:
+    // be understood immediately.
+    advance(PREFILL);
+
+    if (reduced) return;
 
     const loop = (now: number) => {
       if (!last) last = now;
@@ -94,5 +99,5 @@ export function HeroStrip() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
-  return <Strip ref={strip} height={112} capacity={700} />;
+  return <Strip ref={strip} height={112} capacity={CAPACITY} />;
 }

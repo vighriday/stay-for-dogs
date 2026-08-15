@@ -17,9 +17,25 @@
  * Four conditions must all hold before noise counts:
  *   1. loud enough              (rms above the sensitivity threshold)
  *   2. mostly in the dog band   (ratio > 0.55)
- *   3. sustained                (400 ms unbroken)
+ *   3. persistent               (enough noisy frames inside a sliding window)
  *   4. not us                   (Stay is not speaking, and 3 s have passed
  *                                since it stopped)
+ *
+ * Condition 3 is the interesting one, because dogs make two acoustically
+ * different kinds of noise and a single rule cannot catch both:
+ *
+ *   Barking is repetitive. Bursts of 150-250 ms with gaps between them.
+ *   Measured on a 40 s recording, the longest unbroken noisy run was 6
+ *   frames — so an early version of this file, which waited for 400 ms of
+ *   continuous sound, detected precisely nothing.
+ *
+ *   Whining and howling are the opposite: quiet, but continuous.
+ *
+ * So there are two ways in. Three or more separate onsets inside a second
+ * and a half catches barking. A single unbroken stretch over 1.2 s catches
+ * whining and howling. Counting *onsets* rather than noisy frames is what
+ * keeps a door slam out: a slam is loud and lands in the same frequency
+ * band as a bark, but it is one event with a decaying tail, not three.
  */
 
 const FRAME = 2048;
@@ -40,7 +56,6 @@ class StayDetector extends AudioWorkletProcessor {
     this.ms = (n) => Math.round((n / 1000) * sr);
 
     this.minBandRatio = o.minBandRatio ?? 0.55;
-    this.sustain = this.ms(o.sustainMs ?? 400);
     this.quiet = this.ms(o.quietMs ?? 2500);
     this.ceiling = this.ms(o.ceilingMs ?? 20000);
     this.episodeEnd = this.ms(o.episodeEndMs ?? 10000);
@@ -49,6 +64,25 @@ class StayDetector extends AudioWorkletProcessor {
 
     this.setSensitivity(o.sensitivity ?? 0.5);
 
+    // Onset window. Frames are ~43 ms, so 1500 ms is about 35 of them.
+    // The window holds a rising edge per frame, not a noisy flag, so what
+    // gets counted is how many separate times the dog started making noise.
+    const frameMs = (FRAME / sr) * 1000;
+    this.windowFrames = Math.max(4, Math.round((o.onsetWindowMs ?? 1500) / frameMs));
+    this.onsetsNeeded = Math.max(2, o.onsetCount ?? 3);
+    this.continuous = this.ms(o.continuousMs ?? 1200);
+    // Refractory gap between onsets. A door slam is one event, but its
+    // decaying tail oscillates across the threshold and would otherwise be
+    // counted as three or four separate onsets. Real barks are 200-500 ms
+    // apart, so ignoring anything closer than 200 ms collapses the ringing
+    // without losing a bark.
+    this.refractory = this.ms(o.refractoryMs ?? 200);
+    this.sinceOnset = this.refractory;
+    this.window = new Uint8Array(this.windowFrames);
+    this.windowAt = 0;
+    this.windowOnsets = 0;
+    this.wasNoise = false;
+
     // Frame accumulation
     this.acc = 0;
     this.sumFull = 0;
@@ -56,7 +90,7 @@ class StayDetector extends AudioWorkletProcessor {
 
     // State machine, all counters in samples
     this.state = S.IDLE;
-    this.noiseRun = 0; // unbroken noise
+    this.noiseRun = 0; // unbroken noise, still used for the ceiling rule
     this.quietRun = 0; // unbroken quiet
     this.episodeLen = 0; // length of the current episode
     this.cooldownLeft = 0;
@@ -105,6 +139,39 @@ class StayDetector extends AudioWorkletProcessor {
     this.peakDb = -Infinity;
     this.announcedUpset = false;
     this.announcedSettling = false;
+    this.clearWindow();
+  }
+
+  clearWindow() {
+    this.window.fill(0);
+    this.windowAt = 0;
+    this.windowOnsets = 0;
+    this.wasNoise = false;
+    this.sinceOnset = this.refractory;
+  }
+
+  /**
+   * Slides the window on by one frame, recording whether this frame was the
+   * *start* of a noise rather than merely noisy, and returns how many separate
+   * onsets are inside the window.
+   */
+  pushWindow(isNoise, samples) {
+    this.sinceOnset += samples;
+
+    const rising = isNoise && !this.wasNoise;
+    const onset = rising && this.sinceOnset >= this.refractory ? 1 : 0;
+    if (onset) this.sinceOnset = 0;
+    this.wasNoise = isNoise;
+
+    this.windowOnsets += onset - this.window[this.windowAt];
+    this.window[this.windowAt] = onset;
+    this.windowAt = (this.windowAt + 1) % this.windowFrames;
+    return this.windowOnsets;
+  }
+
+  /** Barking repeats; whining holds. Either one counts. */
+  isEpisodeStarting(onsets) {
+    return onsets >= this.onsetsNeeded || this.noiseRun >= this.continuous;
   }
 
   process(inputs) {
@@ -157,6 +224,8 @@ class StayDetector extends AudioWorkletProcessor {
 
     if (deaf) return;
 
+    const onsets = this.pushWindow(isNoise, samples);
+
     if (isNoise) {
       this.noiseRun += samples;
       this.quietRun = 0;
@@ -170,9 +239,9 @@ class StayDetector extends AudioWorkletProcessor {
 
     switch (this.state) {
       case S.IDLE:
-        if (this.noiseRun >= this.sustain) {
+        if (this.isEpisodeStarting(onsets)) {
           this.state = S.UPSET;
-          this.episodeLen = this.noiseRun;
+          this.episodeLen = this.windowFrames * FRAME;
           this.announcedUpset = true;
           this.port.postMessage({ type: "upset", peakDb: this.peakDb });
         }
@@ -231,7 +300,7 @@ class StayDetector extends AudioWorkletProcessor {
       case S.COOLDOWN:
         // Detection keeps running and keeps logging during cooldown; it just
         // cannot release another response. The UI shows this as "holding".
-        if (this.noiseRun >= this.sustain && !this.announcedUpset) {
+        if (this.isEpisodeStarting(onsets) && !this.announcedUpset) {
           this.announcedUpset = true;
           this.port.postMessage({ type: "held", peakDb: this.peakDb });
         }
