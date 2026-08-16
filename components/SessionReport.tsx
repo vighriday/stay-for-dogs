@@ -187,9 +187,15 @@ function EpisodeBars({ seconds }: { seconds: number[] }) {
   return (
     <div className="flex flex-col gap-3">
       <span className="label">Each upset, in order</span>
-      <div className="flex items-end gap-2" role="img" aria-label={`Episode lengths in seconds, in order: ${seconds.join(", ")}`}>
+      {/* Capped width: with only two episodes, flex-1 alone stretches each bar
+          into a slab that reads as a block of colour rather than a measurement. */}
+      <div
+        className="flex items-end gap-2"
+        role="img"
+        aria-label={`Episode lengths in seconds, in order: ${seconds.join(", ")}`}
+      >
         {seconds.map((s, i) => (
-          <div key={i} className="flex flex-1 flex-col items-center gap-2">
+          <div key={i} className="flex max-w-[72px] flex-1 flex-col items-center gap-2">
             <div
               className="w-full bg-clay/70"
               style={{ height: `${Math.max(4, (s / max) * 64)}px` }}

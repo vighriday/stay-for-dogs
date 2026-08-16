@@ -302,6 +302,67 @@ that starts instantly.
 
 ---
 
+## Reading the session back — and the number Gemini is never shown
+
+A session leaves behind something no camera produces: a behavioural record of a dog that
+was alone. When each upset started, how long it ran, how loud it peaked, how the episodes
+compared. That is the thing an owner actually wants, and as a list of timestamps it is
+unreadable.
+
+![Gemini's closing summary of a session](docs/screenshots/04-session-report.png)
+
+**The interesting part is what the model is not given.**
+
+The first version handed Gemini the figures with a prompt telling it not to recite them.
+It recited them anyway — every time, dBFS units and all:
+
+> Biscuit got upset 3 times during the 42.5 minute session. The upsets lasted 14.2, 9.6
+> and 4.8 seconds, with peak volumes of -19 dBFS, -23 dBFS and -28 dBFS.
+
+That is the table read aloud. Instructing a model to ignore what is in front of it is not
+a design, so the numbers were removed instead. `describeSession()` turns the timestamps
+into statements that are already true, and those sentences are the entire prompt input:
+
+```
+The session lasted about 45 minutes.
+The dog got upset three times.
+Each upset was shorter than the one before it.
+The upsets also got quieter as the session went on.
+There was one long stretch of about 20 minutes with nothing at all.
+Stay answered every upset.
+Every answer came after the noise had already stopped, never during it.
+```
+
+Which becomes:
+
+> **Three upsets, getting shorter and quieter**
+>
+> Biscuit got upset three times during the session, which lasted about 45 minutes. Each
+> upset became shorter and quieter as the session went on, and there was a long, quiet
+> stretch in the middle. Stay answered every upset, always after the noise had already
+> stopped.
+>
+> *Worth knowing —* The upsets did get shorter and quieter, but three of them is a thin
+> basis for believing that means very much yet.
+
+**A model cannot misreport a number it was never shown.** Whether a direction may be
+described at all is decided on the server from the episode count — under three upsets and
+the prompt is told outright that no trend exists. That is a rule in code, not a line in a
+prompt that a helpful model can talk itself past. The page shows the exact input under a
+disclosure, so this is checkable rather than claimed.
+
+It also reports sessions that got *worse*, in the same plain language. There would be no
+point otherwise.
+
+**One bug this caught in my own code:** loudness direction was first computed as a ratio
+of dBFS values. Decibels are logarithmic and negative, so `-28 / -19` is not a ratio of
+anything — and a dog that was getting quieter was reported as getting louder. It is a
+difference test with a 4 dB floor now.
+
+This runs on the shared Gemini key, so **demo mode gets it too, with no key of any kind.**
+
+---
+
 ## Running on a free ElevenLabs account
 
 I had no budget, so the first thing I did was ask a free key what it could actually do.
@@ -373,14 +434,18 @@ app/
 ├── privacy/              a straight answer about the microphone
 └── api/
     ├── el/               capabilities · voice · tts · clone
-    └── gemini/           lines · score · vocal
+    └── gemini/           lines · score · vocal · session
+
+components/
+└── SessionReport.tsx     the closing summary, and its exact model input
 
 lib/
 ├── audio/
 │   ├── graph.ts          live mic graph + wake lock
 │   ├── offline.ts        same detector, recorded audio
 │   └── voice.ts          pre-render queue + offline bank
-├── elevenlabs.ts         server-side, typed errors
+├── sessionStats.ts       timestamps → numbers → plain statements
+├── elevenlabs.ts         server-side, typed errors, per-mood delivery
 ├── gemini.ts             prompts + server-side line validation
 └── types.ts              every detector constant, with the reasoning
 
