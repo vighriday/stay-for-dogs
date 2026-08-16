@@ -271,10 +271,13 @@ function VoiceStep({
       )}
 
       <div className="flex flex-col gap-4 border-t border-line pt-8">
+        {/* The placeholder is invented, and truncated on top of that. It only
+            needs to show the shape of a voice ID, and the shape is all it
+            gives away — it used to be a real one. */}
         <Field
           label="Voice ID"
           mono
-          placeholder="e.g. Vn7AbS1LriYk7BcEFDrA"
+          placeholder="e.g. b3TkR9xQm2…"
           spellCheck={false}
           value={voiceIdDraft}
           onChange={(e) => setVoiceIdDraft(e.target.value)}
