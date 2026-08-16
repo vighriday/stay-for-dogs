@@ -224,17 +224,23 @@ export default function TestPage() {
             </p>
             <p>
               <span className="text-bone">
-                The voicing threshold was tuned on these same clips.
+                The threshold was tuned against 12 of these clips, and it scored 5/5 and
+                0/7 on them.
               </span>{" "}
-              That means these numbers flatter it — the honest test is a larger set the
-              detector has never seen, which I did not have time to assemble. Treat 0/7
-              as &ldquo;the idea works&rdquo;, not as a measured false-positive rate.
+              The other 22 arrived afterwards from a different source, and on those it
+              gets 5/9 dogs with 4/13 false alarms. The perfect score was overfitting.
+              The held-out number is the real one.
             </p>
             <p>
-              Sounds that are both loud and genuinely pitched can still get through. A
-              squeaking door hinge did, before the threshold moved; a smoke alarm chirp
-              probably would, because it is a tone. That is a real limit of judging by
-              periodicity rather than by what the sound actually is.
+              <span className="text-bone">A television will set it off.</span> One of the
+              false alarms is a recording of people talking — human speech is voiced and
+              sits inside the same 300–2500 Hz band as a bark, so this detector cannot
+              tell a person from a dog. Raising the pitch floor fixes it and costs a
+              whining clip, and whining is the sound this app exists for. So it stays.
+            </p>
+            <p>
+              That is where signal processing runs out: it can tell you what shape a
+              sound is, never what made it. Past here you need a classifier.
             </p>
           </div>
         </section>
