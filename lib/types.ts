@@ -159,6 +159,4 @@ export const LIMITS = {
   maxAudioClipBytes: 3 * 1024 * 1024,
   lineBufferTarget: 10,
   lineBufferFloor: 4,
-  maxLineWords: 14,
-  minLineWords: 3,
 } as const;

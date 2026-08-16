@@ -1,4 +1,5 @@
 import "server-only";
+import { bannedList, violates } from "./lineRules";
 import type {
   BehaviourScores,
   DogProfile,
@@ -6,7 +7,6 @@ import type {
   SessionReading,
   VocalReading,
 } from "./types";
-import { LIMITS } from "./types";
 
 const BASE = "https://generativelanguage.googleapis.com/v1beta";
 const MODEL = "gemini-2.5-flash";
@@ -119,31 +119,6 @@ const LINE_SCHEMA = {
   required: ["lines"],
 };
 
-/** Words we never allow through, whatever the profile says. */
-const ALWAYS_BANNED = [
-  "walk", "walkies", "leash", "lead", "bye", "goodbye", "outside",
-  "door", "car", "vet", "treat", "dinner", "food", "park", "ball",
-];
-
-function violates(line: string, banned: string[]): string | null {
-  const words = line.trim().split(/\s+/);
-  if (words.length < LIMITS.minLineWords) return "too short";
-  if (words.length > LIMITS.maxLineWords) return "too long";
-  if (/[?!]/.test(line)) return "question or exclamation";
-  if (/["“”]/.test(line)) return "quotation marks";
-  if (/\p{Extended_Pictographic}/u.test(line)) return "emoji";
-
-  const lower = line.toLowerCase();
-  for (const w of banned) {
-    const t = w.trim().toLowerCase();
-    if (!t) continue;
-    if (new RegExp(`\\b${t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`).test(lower)) {
-      return `banned word "${t}"`;
-    }
-  }
-  return null;
-}
-
 export interface LineResult {
   lines: string[];
   /** How many the model produced that broke the rules. Shown in the build log. */
@@ -157,9 +132,7 @@ export async function generateLines(
   count: number,
   alreadyUsed: string[],
 ): Promise<LineResult> {
-  const banned = [
-    ...new Set([...ALWAYS_BANNED, ...profile.bannedWords.map((w) => w.toLowerCase())]),
-  ];
+  const banned = bannedList(profile.bannedWords);
 
   const prompt = `Dog name: ${profile.name}
 Nickname: ${profile.nickname || "none"}

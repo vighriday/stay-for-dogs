@@ -12,6 +12,7 @@ in its owner's voice — different words every time, generated fresh, never a lo
 [![ElevenLabs](https://img.shields.io/badge/ElevenLabs-voice-000000)](https://elevenlabs.io)
 [![Gemini](https://img.shields.io/badge/Gemini-2.5%20Flash-4285F4?logo=googlegemini&logoColor=white)](https://ai.google.dev)
 [![Licence](https://img.shields.io/badge/licence-MIT-green)](LICENSE)
+[![verify](https://github.com/vighriday/stay-for-dogs/actions/workflows/verify.yml/badge.svg)](https://github.com/vighriday/stay-for-dogs/actions/workflows/verify.yml)
 
 ### [**Try it live →**](https://stay-swart.vercel.app)
 
@@ -393,6 +394,48 @@ flowchart TD
 
 Three complete paths instead of one crippled one. **Stay runs on a free ElevenLabs
 account**, never asks you for money, and never stores your key.
+
+---
+
+## The tests exist because of a bug I shipped
+
+Every test in this repo is a regression test for something that actually went wrong.
+
+```bash
+npm run verify     # types, lint, 78 tests
+```
+
+**No test framework.** Node 22's built-in runner and native TypeScript stripping mean the
+dependency count is still five.
+
+Two of the bugs were found by writing the tests, not by the tests later:
+
+**The banned-word list only blocked exact words.** The prompt tells the model *"never use
+any word from the banned list, in any form, including inside other words."* The validator
+matched `\bwalk\b`. So:
+
+```
+BLOCKED   Time for a walk
+PASSES    We are going walking soon      ← would have been spoken aloud
+PASSES    She walked away
+PASSES    Two walks today
+```
+
+*Walk* is the most reactive word in the list, and three of its four forms went straight
+through. Matching a bare prefix would have been worse — `car` would swallow *carpet* and
+*careful* — so it now matches a short set of real inflections. There's a test asserting a
+dog named **Walker** is still called by its name.
+
+**Questions were only caught by punctuation.** `"Are you alright in there"` has no question
+mark, so it passed. It's still a question to a dog, and a question makes a dog get up.
+
+The third is the one from the session summary: **loudness direction computed as a ratio of
+dBFS values.** Decibels are logarithmic and negative, so `-28 / -19` is not a ratio of
+anything, and a dog getting quieter was reported as getting louder.
+
+Also asserted: the twenty offline bank lines all pass the validator — *the safety net must
+not itself be a hazard* — and the detector's tuned constants stay coherent with each other,
+because the first version of this detector failed silently rather than loudly.
 
 ---
 
