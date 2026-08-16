@@ -23,22 +23,28 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+/**
+ * One in six, not one in five. The survey puts separation anxiety at 17.2%,
+ * and this string is the one most people read — it is what a shared link
+ * shows — so it is the last place a rounded-down number should survive.
+ */
+const DESCRIPTION =
+  "One dog in six panics when left alone. Stay listens, waits for the quiet, and answers in your voice — never the same words twice.";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://stay-dog.vercel.app"),
+  metadataBase: new URL("https://stay-swart.vercel.app"),
   title: "Stay — you leave, your voice doesn't",
-  description:
-    "One in five dogs panics when left alone. Stay listens, waits for the quiet, and answers in your voice — never the same words twice.",
+  description: DESCRIPTION,
   openGraph: {
     title: "Stay — you leave, your voice doesn't",
-    description:
-      "Stay listens for your dog, waits for it to settle, and answers in your voice. Never the same words twice.",
+    description: DESCRIPTION,
     type: "website",
+    siteName: "Stay",
   },
   twitter: {
     card: "summary_large_image",
     title: "Stay — you leave, your voice doesn't",
-    description:
-      "Stay listens for your dog, waits for it to settle, and answers in your voice.",
+    description: DESCRIPTION,
   },
 };
 

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Notice, Slider, Toast } from "@/components/ui";
 import { Strip, type StripHandle } from "@/components/Strip";
 import { Timeline } from "@/components/Timeline";
+import { SessionReport } from "@/components/SessionReport";
 import { useSession, useStay } from "@/lib/store";
 import { MicrophoneDenied, startListening, type ListenerHandle } from "@/lib/audio/graph";
 import { VoiceEngine } from "@/lib/audio/voice";
@@ -339,6 +340,14 @@ export default function SessionPage() {
                   </Button>
                 </div>
               </div>
+            )}
+
+            {phase === "ended" && (
+              <SessionReport
+                events={session.events}
+                dogName={profile!.name}
+                geminiKey={geminiKey || undefined}
+              />
             )}
 
             {phase === "ended" && (

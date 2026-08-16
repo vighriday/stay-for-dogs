@@ -1,5 +1,11 @@
 import "server-only";
-import type { BehaviourScores, DogProfile, Mood, VocalReading } from "./types";
+import type {
+  BehaviourScores,
+  DogProfile,
+  Mood,
+  SessionReading,
+  VocalReading,
+} from "./types";
 import { LIMITS } from "./types";
 
 const BASE = "https://generativelanguage.googleapis.com/v1beta";
@@ -302,6 +308,103 @@ export async function classifyVocal(
     kind: raw.kind ?? "other",
     confidence: clamp(Number(raw.confidence) || 0, 0, 1),
     note: String(raw.note ?? "").slice(0, 240),
+  };
+}
+
+/* ── Reading a session back ────────────────────────────────── */
+
+const SESSION_SYSTEM = `Someone left their dog alone for a while. They are back, they are worried, and they
+are reading what happened. You write the few sentences that tell them.
+
+You will be given a short list of plain statements about the session. Every one of them
+is already true. Your only job is to say them the way a person would say them, joined
+up and in a sensible order.
+
+Absolute rules:
+- Use ONLY what is in the list. Never add a fact, a number, a cause or a reassurance
+  that is not there. If the list does not say it, it did not happen.
+- Never invent a number. There are no numbers in the list; there should be none in your
+  answer either. The reader has a table of figures directly above your words — repeating
+  figures at them is the one thing that makes this useless.
+- Never say or imply that Stay caused anything. A single session cannot show that.
+- If the list says there is not enough data to judge a direction, say so plainly, and do
+  not describe a direction anywhere in your answer.
+- Never diagnose. Never call separation anxiety something the dog "has".
+- No advice — not about training, vets, medication, routines, or leaving things out.
+- No exclamation marks, no cheerleading, no "doing great".
+
+Voice: calm, plain, specific, a little warm. A good vet nurse telling you what she saw.
+Short sentences. Ordinary words.
+
+Fields:
+- headline: ONE sentence under 10 words. The shape of the session.
+- reading: 2 to 3 sentences joining the statements into something readable.
+- observation: ONE sentence — the most honest thing that can be said, including its
+  limit. A handful of upsets is still only a handful.
+- watchFor: ONE sentence. Something concrete to notice next time. Never an instruction
+  to do anything to the dog.
+
+Example. Given these statements:
+  The session lasted about 45 minutes.
+  The dog got upset three times.
+  Each upset was shorter than the one before it.
+  There was one long stretch of about 20 minutes with nothing at all.
+  Stay answered every upset.
+  Every answer came after the noise had already stopped, never during it.
+
+Good reading: "Biscuit got upset three times across the three quarters of an hour, and
+each one passed quicker than the last. The middle of the session was completely quiet for
+a long stretch. Stay answered each time, always waiting until the noise had stopped first."
+
+Good observation: "The upsets did get shorter, but three of them is a thin basis for
+believing that means very much yet."
+
+Bad observation: "The upsets became shorter and quieter." (true, but no limit attached)
+Bad observation: "Biscuit is improving." (a claim the data cannot carry)
+Bad watchFor: "Try leaving a worn t-shirt out." (advice, and not from the list)`;
+
+const SESSION_SCHEMA = {
+  type: "object",
+  properties: {
+    headline: { type: "string" },
+    reading: { type: "string" },
+    observation: { type: "string" },
+    watchFor: { type: "string" },
+  },
+  required: ["headline", "reading", "observation", "watchFor"],
+};
+
+/**
+ * `facts` comes from describeSession() — plain statements computed in code.
+ * The raw figures never reach this function, which is deliberate: see the note
+ * on describeSession for why instructing a model not to recite numbers does
+ * not work, and removing the numbers does.
+ */
+export async function readSession(
+  key: string,
+  facts: string[],
+  dogName: string,
+): Promise<SessionReading> {
+  const prompt = `The dog's name is ${dogName}.
+
+What happened:
+${facts.map((f) => `  ${f}`).join("\n")}
+
+Write the closing summary.`;
+
+  const raw = (await generate(
+    key,
+    [{ text: prompt }],
+    SESSION_SYSTEM,
+    SESSION_SCHEMA,
+    0.5,
+  )) as SessionReading;
+
+  return {
+    headline: String(raw.headline ?? "").slice(0, 120),
+    reading: String(raw.reading ?? "").slice(0, 500),
+    observation: String(raw.observation ?? "").slice(0, 300),
+    watchFor: String(raw.watchFor ?? "").slice(0, 300),
   };
 }
 

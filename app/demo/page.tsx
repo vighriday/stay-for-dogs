@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Notice } from "@/components/ui";
 import { Strip, type StripHandle } from "@/components/Strip";
 import { Timeline } from "@/components/Timeline";
+import { SessionReport } from "@/components/SessionReport";
 import { playThrough, type PlayThroughHandle } from "@/lib/audio/offline";
 import { PrerenderedVoiceEngine } from "@/lib/audio/voice";
 import type { StayEvent } from "@/lib/types";
@@ -282,6 +283,8 @@ export default function DemoPage() {
               for 90 seconds; this demo holds for 20, so the clip is long enough to show
               both the answer and the refusal.
             </p>
+
+            {phase === "done" && <SessionReport events={events} dogName={DOG_NAME} />}
 
             {phase === "done" && (
               <div className="flex flex-wrap items-center gap-4 border-t border-line pt-8">

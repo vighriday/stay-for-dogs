@@ -69,7 +69,11 @@ export class VoiceEngine {
     const total = bankTexts.length + LIMITS.lineBufferTarget;
     let done = 0;
 
-    const rendered = await this.renderAll(bankTexts, () => onProgress?.(++done, total));
+    // The bank answers whatever moment it is needed for, so it is rendered in
+    // the settle delivery — the one it will be used in most.
+    const rendered = await this.renderAll(bankTexts, "settle", () =>
+      onProgress?.(++done, total),
+    );
     this.bank = rendered.map((r) => ({ ...r, fromBank: true }));
 
     if (this.bank.length === 0) {
@@ -78,7 +82,9 @@ export class VoiceEngine {
 
     try {
       const lines = await this.writeLines("calm", LIMITS.lineBufferTarget);
-      const freshRendered = await this.renderAll(lines, () => onProgress?.(++done, total));
+      const freshRendered = await this.renderAll(lines, "calm", () =>
+        onProgress?.(++done, total),
+      );
       this.fresh = freshRendered.map((r) => ({ ...r, fromBank: false }));
     } catch (err) {
       this.opts.onDegraded(
@@ -153,7 +159,9 @@ export class VoiceEngine {
     this.refilling = true;
     try {
       const lines = await this.writeLines(mood, 6);
-      const rendered = await this.renderAll(lines);
+      // Written for this mood and spoken in it. Refills are where the
+      // delivery difference actually lands, since the mood is known.
+      const rendered = await this.renderAll(lines, mood);
       if (!this.disposed) {
         this.fresh.push(...rendered.map((r) => ({ ...r, fromBank: false })));
       }
@@ -193,6 +201,7 @@ export class VoiceEngine {
 
   private async renderAll(
     texts: string[],
+    mood: Mood,
     onOne?: () => void,
   ): Promise<{ text: string; buffer: AudioBuffer }[]> {
     // Sequential on purpose. ElevenLabs rate-limits concurrent requests hard
@@ -202,7 +211,7 @@ export class VoiceEngine {
     for (const text of texts) {
       if (this.disposed) break;
       try {
-        out.push({ text, buffer: await this.render(text) });
+        out.push({ text, buffer: await this.render(text, mood) });
       } catch {
         // One bad line does not sink the batch.
       }
@@ -211,11 +220,11 @@ export class VoiceEngine {
     return out;
   }
 
-  private async render(text: string): Promise<AudioBuffer> {
+  private async render(text: string, mood: Mood): Promise<AudioBuffer> {
     const res = await fetch("/api/el/tts", {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-el-key": this.opts.elKey },
-      body: JSON.stringify({ voiceId: this.opts.voiceId, text }),
+      body: JSON.stringify({ voiceId: this.opts.voiceId, text, mood }),
     });
 
     if (!res.ok) {

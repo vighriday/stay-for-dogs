@@ -64,6 +64,39 @@ export interface VocalReading {
   note: string;
 }
 
+/**
+ * What a session actually contained, measured from the event log.
+ *
+ * Every number here is computed in code from timestamps the detector produced.
+ * None of it is inferred by a model — the model is only allowed to put these
+ * numbers into sentences. That split is the whole reason this feature is
+ * honest: an LLM asked to "analyse a session" will happily invent a trend.
+ */
+export interface SessionStats {
+  minutes: number;
+  episodes: number;
+  responses: number;
+  holds: number;
+  /** How long each episode ran, first to last, in seconds. */
+  episodeSeconds: number[];
+  /** Peak loudness of each episode, dBFS. */
+  episodePeaks: number[];
+  /** Longest unbroken quiet between episodes, minutes. */
+  longestQuietMinutes: number;
+  /** The sentences Stay actually said, in order. */
+  linesSpoken: string[];
+  /** True when at least one line came from the offline bank. */
+  usedBank: boolean;
+}
+
+/** Gemini's plain-language reading of a session. Prose only — never numbers. */
+export interface SessionReading {
+  headline: string;
+  reading: string;
+  observation: string;
+  watchFor: string;
+}
+
 /** Every route failure has this shape. No bare 500s. */
 export interface ApiError {
   error: { code: string; message: string; hint?: string };

@@ -1,5 +1,5 @@
 import "server-only";
-import type { VoiceCapabilities } from "./types";
+import type { Mood, VoiceCapabilities } from "./types";
 
 const BASE = "https://api.elevenlabs.io";
 
@@ -119,10 +119,37 @@ export async function getVoice(
   return { voiceId: v.voice_id, name: v.name, category: v.category };
 }
 
+/**
+ * Delivery, per moment.
+ *
+ * One flat voice would be simpler, but the three moments Stay speaks into are
+ * not the same moment, and a person's voice would not be the same either.
+ *
+ *   settle   — the dog has just gone quiet and is being encouraged to stay
+ *              there. Slowest and most even of the three: nothing in the
+ *              delivery should be interesting enough to get up for.
+ *   reassure — twenty seconds of unbroken distress and no sign of stopping.
+ *              Steadier still and a touch slower, because the one thing that
+ *              must not happen here is a voice that sounds worried back.
+ *   calm     — nothing is wrong. Closest to ordinary speech, since this is
+ *              meant to sound like someone who happens to be in the house.
+ *
+ * Stability is what buys that: higher values make ElevenLabs deliver more
+ * evenly and with less expressive variation, which is normally a cost and is
+ * exactly the goal when the listener is an animal deciding whether the room
+ * is safe.
+ */
+const DELIVERY: Record<Mood, { stability: number; similarity_boost: number; speed: number }> = {
+  calm: { stability: 0.6, similarity_boost: 0.8, speed: 0.95 },
+  settle: { stability: 0.7, similarity_boost: 0.8, speed: 0.88 },
+  reassure: { stability: 0.8, similarity_boost: 0.85, speed: 0.85 },
+};
+
 export async function speak(
   key: string,
   voiceId: string,
   text: string,
+  mood: Mood = "settle",
 ): Promise<ArrayBuffer> {
   const res = await fetch(
     `${BASE}/v1/text-to-speech/${voiceId}?output_format=mp3_44100_128`,
@@ -133,8 +160,7 @@ export async function speak(
       body: JSON.stringify({
         text,
         model_id: "eleven_flash_v2_5",
-        // Slightly slow and steady. A calm voice is the entire point.
-        voice_settings: { stability: 0.65, similarity_boost: 0.8, speed: 0.9 },
+        voice_settings: DELIVERY[mood] ?? DELIVERY.settle,
       }),
     },
   );
