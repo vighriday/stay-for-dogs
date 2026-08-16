@@ -591,9 +591,14 @@ Everything here was written between **14 August 2026, 02:00 UTC** and the challe
 deadline of **17 August 2026, 06:59 UTC**, for the
 [DEV Weekend Challenge: Dog Days Edition](https://dev.to/challenges/weekend-2026-08-13).
 
-The commit history is incremental and the messages say what changed and why — including
-both occasions where a measurement proved the design wrong and the design had to move.
-Narrative version in **[docs/BUILD-LOG.md](docs/BUILD-LOG.md)**.
+**Every commit falls inside that window**, and nothing was added after the deadline. The
+history is public and timestamped, so this is checkable rather than asserted.
+
+The messages say what changed and why — including all four occasions where a measurement
+proved the design wrong and the design had to move: the detector that fired on nothing,
+the one that fired on every door, the perfect score that turned out to be overfitting,
+and the banned-word filter that would have said *"walking"* out loud. Narrative version
+in **[docs/BUILD-LOG.md](docs/BUILD-LOG.md)**.
 
 ## Licence
 
