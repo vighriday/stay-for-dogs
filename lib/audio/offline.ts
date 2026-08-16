@@ -179,6 +179,17 @@ export async function playThrough(
   sensitivity: number,
   onFrame: (f: DetectorFrame) => void,
   onEvent: (e: DetectorEvent) => void,
+  /**
+   * Overrides the 90-second cooldown. Demo mode shortens it, because a
+   * forty-second clip is shorter than one live cooldown — so the real default
+   * lets the loop run exactly once and everything after it reads as "held",
+   * which shows the restraint rule without ever showing the rule it restrains.
+   *
+   * The demo page states the substituted value on screen. Every other rule is
+   * untouched, which is the point: it is the cooldown that is shortened, not
+   * the wait for quiet.
+   */
+  cooldownMs?: number,
 ): Promise<PlayThroughHandle> {
   await ctx.audioWorklet.addModule(WORKLET_URL);
 
@@ -191,7 +202,10 @@ export async function playThrough(
     outputChannelCount: [1],
     channelCount: 1,
     channelCountMode: "explicit",
-    processorOptions: processorOptions(sensitivity),
+    processorOptions: {
+      ...processorOptions(sensitivity),
+      ...(cooldownMs === undefined ? {} : { cooldownMs }),
+    },
   });
 
   const filters = wire(ctx, source, node);

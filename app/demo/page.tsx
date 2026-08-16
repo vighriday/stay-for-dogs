@@ -32,6 +32,18 @@ const MODE: Record<DogState, 0 | 1 | 2 | 3> = {
 const DOG_CLIP = "/test-audio/dog/perro-hembra-ladrando.mp3";
 const DOG_NAME = "Biscuit";
 
+/**
+ * The one number this page changes, and it is stated on screen.
+ *
+ * A live session will not speak twice inside 90 seconds. This clip is 40
+ * seconds long, so at the real default the loop can only ever complete once
+ * and the rest of the session log reads "held". Measured across all fourteen
+ * dog clips, 20 s is the value that lets this clip show two full cycles and
+ * still hold once — so the cooldown is demonstrated rather than merely
+ * asserted.
+ */
+const DEMO_COOLDOWN_MS = 20_000;
+
 let seq = 0;
 
 export default function DemoPage() {
@@ -152,6 +164,7 @@ export default function DemoPage() {
             break;
         }
       },
+      DEMO_COOLDOWN_MS,
     );
     play.current = handle;
 
@@ -185,7 +198,7 @@ export default function DemoPage() {
           className={`display text-[clamp(30px,6vw,48px)] ${STATE_COLOUR[dogState]}`}
           aria-live="polite"
         >
-          {headline(phase, dogState, loaded)}
+          {headline(phase, dogState)}
         </h1>
 
         {phase === "failed" && error && (
@@ -221,6 +234,16 @@ export default function DemoPage() {
               in a real session it&apos;s your own.
             </p>
 
+            <p className="text-[13px] text-dim">
+              One number is changed here, and this is it: after speaking, Stay normally
+              refuses to speak again for <span className="text-bone">90 seconds</span>. This
+              clip is 40 seconds long, so at the real setting you would see the loop once
+              and nothing else. The demo uses{" "}
+              <span className="text-bone">20 seconds</span> instead, which fits two
+              responses and one refusal into the clip. Every other rule — the wait for
+              quiet especially — is untouched.
+            </p>
+
             {phase === "loading" && loaded.total > 0 && (
               <p className="mono text-dim">
                 loading {loaded.done} of {loaded.total} lines
@@ -252,6 +275,14 @@ export default function DemoPage() {
         {(phase === "running" || phase === "done") && (
           <>
             <Timeline events={events} />
+
+            <p className="max-w-[62ch] text-[13px] text-dim">
+              <span className="text-bone">held</span> means Stay detected the dog and chose
+              not to answer, because it had already spoken recently. A live session holds
+              for 90 seconds; this demo holds for 20, so the clip is long enough to show
+              both the answer and the refusal.
+            </p>
+
             {phase === "done" && (
               <div className="flex flex-wrap items-center gap-4 border-t border-line pt-8">
                 <Button onClick={run}>Play it again</Button>
@@ -283,11 +314,7 @@ const STATE_COLOUR: Record<DogState, string> = {
   holding: "text-dim",
 };
 
-function headline(
-  phase: Phase,
-  dog: DogState,
-  loaded: { done: number; total: number },
-): string {
+function headline(phase: Phase, dog: DogState): string {
   if (phase === "idle") return "Ready when you are.";
   if (phase === "loading") return "Loading the demo.";
   if (phase === "ready") return "Loaded. Sound on.";
