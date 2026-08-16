@@ -597,5 +597,5 @@ Narrative version in **[docs/BUILD-LOG.md](docs/BUILD-LOG.md)**.
 
 ## Licence
 
-Code is [MIT](LICENSE). Audio under `public/test-audio/` and `public/demo/` keeps its
+Code is [MIT](LICENSE). Audio keeps its original licences — see [NOTICE](NOTICE) and
 original licences — see [SOURCES.md](public/test-audio/SOURCES.md).

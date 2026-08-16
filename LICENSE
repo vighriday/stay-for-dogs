@@ -19,12 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-Third-party audio
-
-The MIT licence above covers the source code. It does not cover the audio files
-under public/test-audio/ and public/demo/, which keep the licences they were
-published under — CC0, CC BY 4.0 and CC BY-SA 4.0. Every clip is listed with its
-author, source URL and licence in public/test-audio/SOURCES.md.

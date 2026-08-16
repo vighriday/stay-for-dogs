@@ -1,0 +1,17 @@
+Third-party audio
+=================
+
+The MIT licence in LICENSE covers the source code in this repository. It does
+not cover the audio files, which keep the licences they were published under.
+
+  public/test-audio/    34 clips used by the detector test page
+                        22 CC0 1.0 (Freesound), 12 CC BY 4.0 / CC BY-SA 4.0
+                        (Wikimedia Commons)
+
+  public/demo/           8 lines spoken by a voice built with ElevenLabs
+                         Voice Design, rendered for demo mode
+
+Every clip is listed with its title, author, source URL and licence in
+public/test-audio/SOURCES.md. Attribution requirements for the CC BY and
+CC BY-SA clips are met there and on the /test page itself, where each clip
+name links back to its original.
