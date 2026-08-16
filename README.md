@@ -218,7 +218,7 @@ build, and it's where the honest numbers below run out.
 
 **The fourth was not in the detector at all**, and I found it by writing a test rather
 than by running one: the banned-word filter let *"we are going walking soon"* through to
-the speaker. [Below](#the-tests-exist-because-of-a-bug-i-shipped).
+the speaker. [Below](#the-rest-of-the-tests-exist-because-of-a-bug-i-shipped).
 
 ---
 
@@ -401,12 +401,50 @@ account**, never asks you for money, and never stores your key.
 
 ---
 
-## The tests exist because of a bug I shipped
+## The detector runs in CI, with no browser and no audio files
+
+The detector is written against the AudioWorklet API, so it could only ever run inside a
+page. That left the one component whose worst failure mode is *silence* with no automated
+check — and that isn't hypothetical. **The first version detected nothing on a real
+barking dog and looked perfectly healthy doing it.**
+
+The worklet is only a class. It touches three globals — `AudioWorkletProcessor`,
+`registerProcessor`, `sampleRate` — so shimming those runs it unmodified under Node.
+**These tests drive the exact file the browser loads**, not a port of it. The band-passed
+second input comes from the same filter design the live graph builds.
+
+The signals are generated in code, each shaped to isolate one rule:
+
+| Signal | Asserts |
+|---|---|
+| Three voiced bursts | An episode opens |
+| One burst, then two | It doesn't — a bang is an event, not a pattern |
+| Four loud broadband transients | Still nothing. **The door-slam case that justified the voicing gate** |
+| A sustained tone | Opens via the continuous route — whining, not barking |
+| Noise that never stops | Silent throughout, then answers the quiet afterwards |
+| 22 s unbroken | Answered anyway, on the ceiling rule |
+| A second episode inside 90 s | Logged as `held`, not answered |
+| Faint barking at two sensitivities | The slider really does move the operating point |
+
+The last test asserts that **a speech-shaped signal still triggers it** — the documented
+limitation, written down as an assertion so it can't be quietly "fixed" without someone
+noticing that the whining case went with it.
+
+Building it taught me something: my first synthetic "speech" was a bass-heavy tone, and it
+*didn't* trigger — a 300 Hz highpass strips a 150 Hz fundamental. Real speech carries its
+energy in the **formants**, inside the dog band. Modelling it wrong would have made the
+limitation vanish from the test bench while leaving it in the product.
+
+**`/test` measures how often the detector is right. This measures why.**
+
+---
+
+## The rest of the tests exist because of a bug I shipped
 
 Every test in this repo is a regression test for something that actually went wrong.
 
 ```bash
-npm run verify     # types, lint, 78 tests
+npm run verify     # types, lint, 94 tests
 ```
 
 **No test framework.** Node 22's built-in runner and native TypeScript stripping mean the
@@ -485,6 +523,13 @@ app/
 
 components/
 └── SessionReport.tsx     the closing summary, and its exact model input
+
+test/
+├── harness.ts            AudioWorklet shim + signal generators
+├── detector.test.ts      the real worklet, driven in Node
+├── lineRules.test.ts     what may be said to a dog
+├── sessionStats.test.ts  timestamps → statements
+└── detectorConfig.test.ts constants that must stay coherent
 
 lib/
 ├── audio/
