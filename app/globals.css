@@ -18,7 +18,9 @@
   --color-line: #2c251e;
   --color-line-bright: #3d342a;
   --color-bone: #ede6da;
-  --color-dim: #8a8075;
+  /* 4.64:1 on --ink-raised, 5.05:1 on --ink. Was #8a8075, which measured
+     4.45:1 on raised surfaces and failed WCAG AA for small text. */
+  --color-dim: #8d8378;
   --color-dimmer: #5f574e;
   --color-lamp: #e8a33d;
   --color-moss: #7c8f6b;

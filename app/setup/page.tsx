@@ -74,7 +74,11 @@ function StepDots({ step }: { step: Step }) {
   const steps: Step[] = ["key", "voice", "dog"];
   const index = steps.indexOf(step);
   return (
-    <div className="flex items-center gap-2" aria-label={`Step ${index + 1} of 3`}>
+    <div
+      className="flex items-center gap-2"
+      role="img"
+      aria-label={`Step ${index + 1} of 3`}
+    >
       {steps.map((s, i) => (
         <span
           key={s}
