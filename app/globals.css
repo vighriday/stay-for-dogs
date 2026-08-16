@@ -18,10 +18,19 @@
   --color-line: #2c251e;
   --color-line-bright: #3d342a;
   --color-bone: #ede6da;
-  /* 4.64:1 on --ink-raised, 5.05:1 on --ink. Was #8a8075, which measured
-     4.45:1 on raised surfaces and failed WCAG AA for small text. */
-  --color-dim: #8d8378;
-  --color-dimmer: #5f574e;
+  /* Both tiers clear WCAG AA (4.5:1) for small text on every surface here.
+     Measured against --ink-raised, the darkest background either sits on:
+       --color-dim     5.50:1
+       --color-dimmer  4.76:1
+
+     --color-dimmer was #5f574e and measured 2.65:1, which is a clear failure.
+     It went unnoticed because every element using it — session log details,
+     stat captions, clip licences — only renders after a session or a sweep has
+     run, so a page-load audit never saw one of them. --color-dim moved up with
+     it: it was at 4.64:1, right on the floor, leaving no room for a legible
+     third tier underneath. */
+  --color-dim: #9a9084;
+  --color-dimmer: #8e857a;
   --color-lamp: #e8a33d;
   --color-moss: #7c8f6b;
   --color-clay: #c4705a;

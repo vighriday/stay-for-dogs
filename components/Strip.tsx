@@ -57,7 +57,8 @@ const COLOURS = {
   clay: "#c4705a",
   moss: "#7c8f6b",
   lamp: "#e8a33d",
-  dim: "#8a8075",
+  // Kept in step with --color-dim in globals.css. Canvas cannot read the token.
+  dim: "#9a9084",
 };
 
 function levelFromDb(db: number): number {
