@@ -174,7 +174,7 @@ flowchart TD
 Then, on top: three separate onsets inside 1.5&nbsp;s (barking repeats) **or** 1.2&nbsp;s
 unbroken (whining sustains).
 
-### Three things I got badly wrong
+### Four things I got badly wrong
 
 **The first detector never fired at all.** I wrote the obvious rule — loud, in-band, held
 for 400&nbsp;ms. Against a 40-second recording of a barking dog it produced two log
@@ -215,6 +215,10 @@ No model, no download, nothing leaves the device. But speech has exactly the sam
 signature as a bark, and no amount of threshold work fixes that. Identifying *what made
 a sound* rather than *what shape it is* needs a classifier — that's the next thing to
 build, and it's where the honest numbers below run out.
+
+**The fourth was not in the detector at all**, and I found it by writing a test rather
+than by running one: the banned-word filter let *"we are going walking soon"* through to
+the speaker. [Below](#the-tests-exist-because-of-a-bug-i-shipped).
 
 ---
 
